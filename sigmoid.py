@@ -5,4 +5,4 @@ class Sigmoid:
         return expit(x)
 
     def backward(self, x):
-        return expit(x) * (1-expit(x))
+        return x * (1. - x)

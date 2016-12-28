@@ -22,8 +22,7 @@ class NeuralNetwork:
         scale = last_width ** -.5
         self.network.append(np.random.normal(scale=scale, size=(output_width, last_width)))
 
-    def predict(self, features):
-        inputs = features
+    def predict(self, inputs):
         for layer in self.network:
             inputs = self.activation.forward(np.dot(layer, inputs))
         return inputs
@@ -39,8 +38,6 @@ class NeuralNetwork:
         labels = np.array(labels, ndmin=2).T
         errors = self.cost_f(outputs[-1], labels)
         for l_idx, layer in enumerate(self.network[::-1]):
-            l_output = outputs[-l_idx - 1]
-            l_input = outputs[-l_idx - 2].T
-            p_deltas = errors * self.activation.backward(l_output)
+            p_deltas = errors * self.activation.backward(outputs[-l_idx - 1])
             errors = np.dot(layer.T, errors)
-            layer += self.learning_rate * np.dot(p_deltas, l_input)
+            layer += self.learning_rate * np.dot(p_deltas, outputs[-l_idx - 2].T)

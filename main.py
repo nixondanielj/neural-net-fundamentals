@@ -19,11 +19,11 @@ def test(nn, feats, labels):
 
 def train(nn, feats, labels):
     print 'training...'
-    tenpts = len(feats)/10
-    for idx, label in enumerate(train_labels):
-        nn.train(train_features[idx], label)
+    tenpts = len(feats)/5
+    for idx, label in enumerate(labels):
+        nn.train(feats[idx], label)
         if idx % tenpts == 0:
-            print '%s complete' % (float(idx) / tenpts * 10)
+            print '%s complete' % (float(idx) / tenpts * 20)
     print 'done'
 
 def train_step_debug(nn, train_labels, train_features):
@@ -35,11 +35,9 @@ def train_step_debug(nn, train_labels, train_features):
         prd = nn.predict(train_features[i])
         print '2nd attmpt:', prd, np.argmax(prd)
 
-print 'loading sets'
-train_labels, train_features, test_labels, test_features = load_sets(10000)
-print 'done...'
-
 def train_and_test(nn, limit=None):
+    print 'loading sets'
+    train_labels, train_features, test_labels, test_features = load_sets(limit)
     print_model(nn)
     train(nn, train_features, train_labels)
     return test(nn, test_features, test_labels)
@@ -48,4 +46,8 @@ def run_default():
     nn = network.NeuralNetwork(784, 10)
     print 'accuracy: %s' % train_and_test(nn)
 
-timeit.timeit(run_default)
+def run_timed():
+    nn = network.NeuralNetwork(784, 10)
+    print 'accuracy: %s' % train_and_test(nn, 1000)
+
+print '%s seconds' % str(timeit.timeit(run_timed, number=3))[:4]
