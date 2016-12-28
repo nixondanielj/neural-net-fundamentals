@@ -51,8 +51,8 @@ class NeuralNetwork:
             mini_batches = [
                 training_data[k:k + batch_size]
                 for k in xrange(0, len(training_data), batch_size)]
-            for batch in training_data:
-                self.train_batch([batch])
+            for batch in mini_batches:
+                self.train_batch(batch)
 
     def train_batch(self, batch):
         raw_deltas = [self._backprop(f, l) for f, l in batch]

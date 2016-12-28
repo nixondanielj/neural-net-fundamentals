@@ -45,6 +45,6 @@ def run_default():
 
 def run_timed():
     nn = network.NeuralNetwork(784, 10)
-    print 'accuracy: %s' % train_and_test(nn, 1000)
+    print 'accuracy: %s' % train_and_test(nn, 20000)
 
-print '%s seconds' % str(timeit.timeit(run_timed, number=1))[:4]
+print '%s seconds' % str(timeit.timeit(run_timed, number=3))[:4]
