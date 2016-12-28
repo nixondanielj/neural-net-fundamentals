@@ -47,13 +47,14 @@ class NeuralNetwork:
 
     def train(self, training_data, batch_size, epochs=1):
         for _ in range(epochs):
-            random.shuffle(training_data)
+            #random.shuffle(training_data)
             mini_batches = [
                 training_data[k:k + batch_size]
                 for k in xrange(0, len(training_data), batch_size)]
-            for batch in mini_batches:
-                self.train_batch(batch)
+            for batch in training_data:
+                self.train_batch([batch])
 
     def train_batch(self, batch):
-        deltas = np.average([self._backprop(f, l) for f, l in batch], axis=0)
+        raw_deltas = [self._backprop(f, l) for f, l in batch]
+        deltas = np.average(raw_deltas, axis=0)
         self.network += self.learning_rate * deltas
