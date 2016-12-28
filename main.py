@@ -19,11 +19,7 @@ def test(nn, feats, labels):
 
 def train(nn, feats, labels):
     print 'training...'
-    tenpts = len(feats)/5
-    for idx, label in enumerate(labels):
-        nn.train(feats[idx], label)
-        if idx % tenpts == 0:
-            print '%s complete' % (float(idx) / tenpts * 20)
+    nn.train(zip(feats, labels), 1)
     print 'done'
 
 def train_step_debug(nn, train_labels, train_features):
@@ -49,5 +45,4 @@ def run_default():
 def run_timed():
     nn = network.NeuralNetwork(784, 10)
     print 'accuracy: %s' % train_and_test(nn, 1000)
-
 print '%s seconds' % str(timeit.timeit(run_timed, number=3))[:4]
