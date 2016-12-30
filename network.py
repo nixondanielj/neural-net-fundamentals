@@ -7,7 +7,7 @@ class NeuralNetwork:
     def __init__(self, input_width, output_width, \
         hidden_width=None, depth=3, learning_rate=.1, \
         activation=Sigmoid, cost=QuadraticCost, \
-        reg_rate=0):
+        reg_rate=0.):
         self.network = []
         self.learning_rate = learning_rate
         self.activation = activation()
@@ -48,5 +48,7 @@ class NeuralNetwork:
             delta = np.dot(delta, self.network[-l + 1].T)
             delta *= self.activation.backward(zs[-l])
             w_deltas.append(np.dot(outputs[-l-1].T, delta))
-
+        if self.reg_rate:
+            regularizer = 1 - self.learning_rate * self.reg_rate / len(batch)
+            self.network = np.multiply(self.network, regularizer)
         self.network -= self.learning_rate * np.array(w_deltas[::-1])/len(batch)

@@ -37,21 +37,13 @@ def train(nn, training_data, batch_size, epochs=1, test_data=None):
     nn.learning_rate = lr
 
 ldr = DataLoader()
-train_data, test_data = ldr.load_sets(10000)
+train_data, test_data = ldr.load_sets()
 random.shuffle(test_data)
 
-## quadratic
-print 'starting quadratic'
-nn = NeuralNetwork(784, 10, 100, 3, .3)
-print_model(nn)
-train(nn, train_data, 20, 10, test_data)
-print 'final accuracy %s%%' % (test(nn, test_data) * 100)
-print ''
-
 ## cross-entropy
-print 'starting ce'
-nn = NeuralNetwork(784, 10, 100, 3, .3, cost=CrossEntropyCost)
+print 'starting ce regged'
+nn = NeuralNetwork(784, 10, 100, 3, .3, cost=CrossEntropyCost, reg_rate=.001)
 print_model(nn)
-train(nn, train_data, 20, 10, test_data)
+train(nn, train_data, 5, 10, test_data)
 print 'final accuracy %s%%' % (test(nn, test_data) * 100)
 print ''
